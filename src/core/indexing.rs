@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 /// This structure index all documents which are in the filesystem.
+#[derive(RustcDecodable, RustcEncodable)]
 pub struct IndexedDocuments {
     core : HashMap<String, Vec<Document>>,
     core_vector : Vec<String>,
@@ -13,6 +14,7 @@ pub struct IndexedDocuments {
 
 /// This structure represents a file (directory, text, video, audio, binary, ...) in the filesystem.
 /// A 'Document' is represented by a name, an extension, a path and a size.
+#[derive(RustcDecodable, RustcEncodable)]
 pub struct Document {
     extension : String,
     name : String,
