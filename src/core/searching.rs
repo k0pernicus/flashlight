@@ -7,9 +7,12 @@ use std::path::PathBuf;
 
 use walkdir::WalkDir;
 
-pub fn search_file_in_db(indexed_documents: &IndexedDocuments, file : &str) {
+pub fn search_file_in_db(indexed_documents: &IndexedDocuments, file : &str) -> Vec<String> {
     if file != "" {
-        indexed_documents.look_after_document(file);
+        indexed_documents.look_after_document(file)
+    }
+    else {
+        Vec::new()
     }
 }
 
