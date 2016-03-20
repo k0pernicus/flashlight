@@ -1,4 +1,5 @@
 extern crate argparse;
+extern crate rustc_serialize;
 extern crate walkdir;
 
 mod core;
@@ -6,12 +7,14 @@ mod gui;
 
 use argparse::{ArgumentParser, Store, StoreTrue};
 use core::indexing::IndexedDocuments;
+use core::json::{save_indexed_documents, import_indexed_documents};
 use core::searching::search_file_in_db;
-use gui::search_bar::create_gui;
 use std::io;
-use std::io::{Write};
+use std::io::prelude::*;
 
 // TODO: NO CASE MATCHING!!!!!
+
+static JSON_FILEPATH: &'static str = "/home/antonin/.indexed_documents.json";
 
 fn main() {
 
@@ -34,31 +37,39 @@ fn main() {
         ap.parse_args_or_exit();
     }
 
-    create_gui();
+    let mut main_doc = IndexedDocuments::new();
 
     if indexation != "" {
 
-        let mut main_doc = IndexedDocuments::new(indexation);
-        // main_doc.set_verbose_mod(true);
-        main_doc.begin_indexation();
+        main_doc.begin_indexation(&indexation);
+        main_doc.set_verbose_mod(true);
 
-        loop {
+        save_indexed_documents(&main_doc, JSON_FILEPATH);
 
-            let mut input = String::new();
+    }
 
-            print!(">>> ");
-            io::stdout().flush().unwrap();
+    else {
 
-            match io::stdin().read_line(&mut input) {
-                Ok(_) => (),
-                Err(error) => println!("error: {}", error),
-            }
+        main_doc = import_indexed_documents(JSON_FILEPATH);
+        main_doc.set_verbose_mod(true);
 
-            input = input.trim().to_string();
+    }
 
-            search_file_in_db(&main_doc, &input);
+    loop {
 
+        let mut input = String::new();
+
+        print!(">>> ");
+        io::stdout().flush().unwrap();
+
+        match io::stdin().read_line(&mut input) {
+            Ok(_) => (),
+            Err(error) => println!("error: {}", error),
         }
+
+        input = input.trim().to_lowercase();
+
+        search_file_in_db(&main_doc, &input);
 
     }
 
