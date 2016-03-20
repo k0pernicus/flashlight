@@ -131,7 +131,8 @@ impl IndexedDocuments {
         self.paths.push(new_path.to_string());
     }
 
-    pub fn look_after_document(&self, file : &str) {
+    pub fn look_after_document(&self, file : &str) -> Vec<String> {
+        let mut vector_to_return = Vec::new();
         if self.is_file_exists(file) {
             if self.verbose_mod {
                 println!("Perfect match!");
@@ -142,6 +143,7 @@ impl IndexedDocuments {
                 if self.verbose_mod {
                     println!("\t* {} -> {} bytes", all_path_file, document.get_size());
                 }
+                vector_to_return.push(all_path_file);
             }
         }
         else {
@@ -156,12 +158,16 @@ impl IndexedDocuments {
                 for document_filename in corresponding_documents {
                     let documents = self.get_paths_from_core(&document_filename.to_lowercase());
                     for document in documents {
-                        println!("\t {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
+                        let all_path_file = document.get_path() + "/" + &document.get_filename();
+                        println!("\t {} -> {} bytes", all_path_file, document.get_size());
+                        vector_to_return.push(all_path_file);
                     }
+
                 }
             }
 
         }
+        return vector_to_return
     }
 
 }
