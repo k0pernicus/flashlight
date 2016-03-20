@@ -9,16 +9,16 @@ use argparse::{ArgumentParser, Store, StoreTrue};
 use core::indexing::IndexedDocuments;
 use core::json::{save_indexed_documents, import_indexed_documents};
 use core::searching::search_file_in_db;
+use gui::search_bar::run_ui;
 use std::io;
 use std::io::prelude::*;
-
-// TODO: NO CASE MATCHING!!!!!
 
 static JSON_FILEPATH: &'static str = "/home/antonin/.indexed_documents.json";
 
 fn main() {
 
     let mut indexation = String::new();
+    let mut visu = "terminal".to_string();
     let mut verbose = false;
 
     {
@@ -33,6 +33,10 @@ fn main() {
         ap.refer(&mut verbose)
             .add_option(&["-v", "--verbose"], StoreTrue,
             "Be verbose");
+        // Default visualization
+        ap.refer(&mut visu)
+            .add_option(&["-V", "--visu"], Store,
+            "Visualization to use: gui (default) or terminal");
         // Parse those arguments
         ap.parse_args_or_exit();
     }
@@ -55,21 +59,32 @@ fn main() {
 
     }
 
-    loop {
+    // Terminal visu
+    if visu == "terminal" {
 
-        let mut input = String::new();
+        loop {
 
-        print!(">>> ");
-        io::stdout().flush().unwrap();
+            let mut input = String::new();
 
-        match io::stdin().read_line(&mut input) {
-            Ok(_) => (),
-            Err(error) => println!("error: {}", error),
+            print!(">>> ");
+            io::stdout().flush().unwrap();
+
+            match io::stdin().read_line(&mut input) {
+                Ok(_) => (),
+                Err(error) => println!("error: {}", error),
+            }
+
+            input = input.trim().to_lowercase();
+
+            search_file_in_db(&main_doc, &input);
+
         }
 
-        input = input.trim().to_lowercase();
+    }
+    // Let's try the GUI visu
+    else {
 
-        search_file_in_db(&main_doc, &input);
+        run_ui()
 
     }
 
