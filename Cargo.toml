@@ -5,5 +5,8 @@ authors = ["k0pernicus <antonin.carette@gmail.com>"]
 
 [dependencies]
 argparse = "0.2.1"
+gdk = "0.3.0"
+gdk-pixbuf = "0.0.1"
+gtk = "0.0.7"
 rustc-serialize = "0.3"
 walkdir = "0.1"
