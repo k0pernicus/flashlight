@@ -84,7 +84,7 @@ fn main() {
     // Let's try the GUI visu
     else {
 
-        run_ui()
+        run_ui(main_doc)
 
     }
 
