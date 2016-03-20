@@ -6,7 +6,9 @@ use std::path::PathBuf;
 use walkdir::WalkDir;
 
 pub fn search_file_in_db(indexed_documents: &IndexedDocuments, file : &str) {
-    indexed_documents.print_available_documents(file);
+    if file != "" {
+        indexed_documents.look_after_document(file);
+    }
 }
 
 pub fn scan_repositories(directory : &PathBuf, indexed_documents : &mut IndexedDocuments) {
@@ -17,7 +19,7 @@ pub fn scan_repositories(directory : &PathBuf, indexed_documents : &mut IndexedD
         let entry_path = entry.path();
         let entry_path_str = entry_path.to_str().unwrap();
         // If the file has not been already indexed...
-        if ! indexed_documents.is_path_exists(entry_path_str) {
+        if ! indexed_documents.is_path_exists(entry_path_str) && ! (entry_path_str == directory.to_str().unwrap()) {
 
             if verbose_mod {
                 println!("ADDED {} -> New document", entry_path_str);
