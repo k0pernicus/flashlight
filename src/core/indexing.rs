@@ -114,8 +114,13 @@ impl IndexedDocuments {
         self.root.clone()
     }
 
+    pub fn set_root(&mut self, root:&str) {
+        self.root = root.to_string();
+    }
+
     /// Method to begin the indexation of files
-    pub fn begin_indexation(&mut self) {
+    pub fn begin_indexation(&mut self, root: &str) {
+        self.set_root(root);
         scan_repositories(&PathBuf::from(self.get_root()), self);
     }
 
