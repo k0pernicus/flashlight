@@ -1,4 +1,5 @@
 use core::searching::scan_repositories;
+use core::utils::open_file;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
@@ -23,12 +24,12 @@ pub struct Document {
 }
 
 impl IndexedDocuments {
-    pub fn new(root: String) -> IndexedDocuments {
+    pub fn new() -> IndexedDocuments {
         IndexedDocuments {
             core : HashMap::new(),
             core_vector : Vec::new(),
             paths : Vec::new(),
-            root : root,
+            root : "".to_string(),
             verbose_mod : false,
         }
     }
