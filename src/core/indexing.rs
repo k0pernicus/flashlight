@@ -105,10 +105,6 @@ impl IndexedDocuments {
         &self.core
     }
 
-    pub fn get_core_vector(&self) -> &Vec<String> {
-        &self.core_vector
-    }
-
     /// Method to get the root indexing node
     pub fn get_root(&self) -> String {
         self.root.clone()
