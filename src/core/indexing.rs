@@ -1,4 +1,4 @@
-use core::searching::scan_repositories;
+use core::searching::{get_nb_of_child, scan_repositories};
 use core::utils::open_file;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -121,7 +121,9 @@ impl IndexedDocuments {
     /// Method to begin the indexation of files
     pub fn begin_indexation(&mut self, root: &str) {
         self.set_root(root);
-        scan_repositories(&PathBuf::from(self.get_root()), self);
+        let path_to_root = &PathBuf::from(self.get_root());
+        let nb_of_child = get_nb_of_child(path_to_root);
+        scan_repositories(path_to_root, self, nb_of_child);
     }
 
     /// Method to add a new path (new filepath) in the paths structure
