@@ -22,15 +22,18 @@ fn create_rslts(rslts: &Vec<String>, vertical_layout: &gtk::Box) {
         button.connect_clicked(|b| {
             open_file(&(b.get_label().unwrap()));
         });
+        button.hide_on_delete();
         button.show();
         vertical_layout.add(&button);
     }
+    vertical_layout.check_resize();
 }
 
 // Clear rslts
 fn clear_rslts(vertical_layout: &gtk::Box) {
     for widget in &vertical_layout.get_children() {
         vertical_layout.remove(widget);
+        widget.destroy();
     }
 }
 
