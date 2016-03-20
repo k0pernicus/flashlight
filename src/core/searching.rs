@@ -1,6 +1,8 @@
 use core::indexing::Document;
 use core::indexing::IndexedDocuments;
 
+use std::io;
+use std::io::prelude::*;
 use std::path::PathBuf;
 
 use walkdir::WalkDir;
@@ -11,9 +13,18 @@ pub fn search_file_in_db(indexed_documents: &IndexedDocuments, file : &str) {
     }
 }
 
-pub fn scan_repositories(directory : &PathBuf, indexed_documents : &mut IndexedDocuments) {
+pub fn get_nb_of_child(directory : &PathBuf) -> usize {
+    let mut nb_of_child : usize = 1;
+    for _ in WalkDir::new(directory).follow_links(true).into_iter().filter_map(|e| e.ok()) {
+        nb_of_child += 1;
+    }
+    nb_of_child
+}
+
+pub fn scan_repositories(directory : &PathBuf, indexed_documents : &mut IndexedDocuments, nb_of_child : usize) {
     // Get all entries from the PathBuf given as parameter, filter and follow links
     let verbose_mod = indexed_documents.is_verbose_mod();
+    let mut current_child = 1;
     for entry in WalkDir::new(directory).follow_links(true).into_iter().filter_map(|e| e.ok()) {
         // Get the parent node
         let entry_path = entry.path();
@@ -51,6 +62,9 @@ pub fn scan_repositories(directory : &PathBuf, indexed_documents : &mut IndexedD
             indexed_documents.add_doc_in_core(document_filename, new_document);
             indexed_documents.add_doc_in_core_vector(document_filename);
         }
+        print!("\rIndexed files: {0} / {1} files...", current_child, nb_of_child);
+        io::stdout().flush().ok().expect("Could not flush stdout");
+        current_child += 1;
     }
     indexed_documents.sort_core_vector();
 }
