@@ -150,15 +150,11 @@ impl IndexedDocuments {
                 }
             }
             else {
-                if self.verbose_mod {
-                    println!("Available documents for \"{}\":", file);
-                }
+                println!("Available documents for \"{}\":", file);
                 for document_filename in corresponding_documents {
                     let documents = self.get_paths_from_core(&document_filename.to_lowercase());
                     for document in documents {
-                        if self.verbose_mod {
-                            println!("\t {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
-                        }
+                        println!("\t {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
                     }
                 }
             }
