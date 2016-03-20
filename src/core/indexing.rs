@@ -79,12 +79,12 @@ impl IndexedDocuments {
 
     /// Method to create a document in the core structure
     pub fn create_doc_in_core(&mut self, filename: &str) {
-        self.core.insert(filename.to_string(), Vec::new());
+        self.core.insert(filename.to_lowercase(), Vec::new());
     }
 
     /// Method to add a document to an existing key of the core structure
     pub fn add_doc_in_core(&mut self, filename: &str, document: Document) {
-        match self.core.get_mut(filename) {
+        match self.core.get_mut(&filename.to_lowercase()) {
             Some(doc_core) => {
                 doc_core.push(document);
             },
@@ -124,24 +124,36 @@ impl IndexedDocuments {
         self.paths.push(new_path.to_string());
     }
 
-    pub fn print_available_documents(&self, file : &str) {
+    pub fn look_after_document(&self, file : &str) {
         if self.is_file_exists(file) {
-            println!("Perfect match:");
+            if self.verbose_mod {
+                println!("Perfect match!");
+            }
             for document in self.get_paths_from_core(file) {
-                println!("\t* {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
+                let all_path_file = document.get_path() + "/" + &document.get_filename();
+                open_file(&all_path_file);
+                if self.verbose_mod {
+                    println!("\t* {} -> {} bytes", all_path_file, document.get_size());
+                }
             }
         }
         else {
-            let corresponding_documents = self.core_vector.iter().filter(|s| s.starts_with(file)).map(|s| s.to_owned()).collect::<Vec<String>>();
+            let corresponding_documents = self.core_vector.iter().filter(|s| s.to_lowercase().starts_with(file)).map(|s| s.to_owned()).collect::<Vec<String>>();
             if corresponding_documents.is_empty() {
-                println!("No available documents for \"{}\"", file);
+                if self.verbose_mod {
+                    println!("No available documents for \"{}\"", file);
+                }
             }
             else {
-                println!("Available documents for \"{}\":", file);
+                if self.verbose_mod {
+                    println!("Available documents for \"{}\":", file);
+                }
                 for document_filename in corresponding_documents {
-                    let documents = self.get_paths_from_core(&document_filename);
+                    let documents = self.get_paths_from_core(&document_filename.to_lowercase());
                     for document in documents {
-                        println!("\t {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
+                        if self.verbose_mod {
+                            println!("\t {} -> {} bytes", document.get_path() + "/" + &document.get_filename(), document.get_size());
+                        }
                     }
                 }
             }
