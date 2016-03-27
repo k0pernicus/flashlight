@@ -1,6 +1,4 @@
-<img alt="Redox" height="90" src="img/logo.png">
-
-<img alt="Flashlight" height="90" src="img/flashlight_icon.png"/>
+<img alt="Flashlight" height="90" src="img/flashlight_icon.png"/> Flashlight
 
 Flashlight is a personal project to support the usefull Spotlight software for GNU/Linux systems, in Rust.
 
