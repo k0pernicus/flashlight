@@ -1,6 +1,6 @@
 # Flashlight
 
-Flashlight is a personal project to support the usefull Spotlight software for GNU/Linux systems, in Rust.
+Flashlight is a Spotlight clone, for GNU/Linux distributions, written in [Rust](http://rust-lang.org).
 
 The current version of Rust is the **1.7.0** (2016-02-29).
 
