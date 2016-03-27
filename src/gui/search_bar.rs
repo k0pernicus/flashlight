@@ -11,7 +11,7 @@ use self::gdk_pixbuf::Pixbuf;
 use self::gtk::{Button, Entry, Orientation, Widget, Window, WindowPosition, WindowType};
 use self::gtk::prelude::*;
 
-static DEFAULT_ICON: &'static str = "./img/search_bar_icon.png";
+static DEFAULT_ICON: &'static str = "./img/flashlight_icon.png";
 
 // Create rslts
 fn create_rslts(rslts: &Vec<String>, vertical_layout: &gtk::Box) {
