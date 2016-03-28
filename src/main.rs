@@ -43,20 +43,14 @@ fn main() {
 
     let mut main_doc = IndexedDocuments::new();
 
+    main_doc.set_verbose_mod(verbose);
+
     if indexation != "" {
-
         main_doc.begin_indexation(&indexation);
-        // main_doc.set_verbose_mod(true);
-
         save_indexed_documents(&main_doc, JSON_FILEPATH);
-
     }
-
     else {
-
         main_doc = import_indexed_documents(JSON_FILEPATH);
-        // main_doc.set_verbose_mod(true);
-
     }
 
     // Terminal visu
